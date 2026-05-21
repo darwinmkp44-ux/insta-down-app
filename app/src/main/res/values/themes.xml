@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.InstaDown" parent="android:Theme.Material.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="android:statusBarColor">#0F0C20</item>
+        <item name="android:navigationBarColor">#0F0C20</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+
+</resources>

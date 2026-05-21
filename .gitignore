@@ -1,0 +1,15 @@
+# Gradle files
+.gradle/
+build/
+app/build/
+
+# Local configuration files
+local.properties
+.antigravitycli/
+android-sdk/
+
+# Log files
+*.log
+
+# OS files
+.DS_Store

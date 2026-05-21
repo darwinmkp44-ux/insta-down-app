@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">InstaDown</string>
+    
+    <!-- Navigation Tabs -->
+    <string name="tab_home">Início</string>
+    <string name="tab_gallery">Galeria</string>
+    <string name="tab_settings">Configurações</string>
+
+    <!-- Home Screen -->
+    <string name="placeholder_url">Cole o link do Instagram aqui...</string>
+    <string name="btn_download">Baixar</string>
+    <string name="btn_paste">Colar</string>
+    <string name="msg_clipboard_detected">Link do Instagram detectado na área de transferência! Deseja colar e baixar?</string>
+    
+    <!-- Gallery Screen -->
+    <string name="empty_gallery">Nenhum vídeo baixado ainda.</string>
+    <string name="btn_share">Compartilhar</string>
+    <string name="btn_delete">Excluir</string>
+    <string name="confirm_delete">Tem certeza que deseja excluir este vídeo?</string>
+
+    <!-- Settings Screen -->
+    <string name="api_key_label">FastSaver API Key</string>
+    <string name="api_key_hint">Insira sua chave fs_sk_...</string>
+    <string name="save_folder_label">Nome da Pasta de Download</string>
+    <string name="save_folder_hint">InstaDown</string>
+    <string name="btn_save_settings">Salvar Configurações</string>
+    <string name="settings_saved_success">Configurações salvas com sucesso!</string>
+    <string name="error_invalid_api_key">Chave de API inválida ou vazia.</string>
+</resources>
