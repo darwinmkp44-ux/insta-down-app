@@ -31,12 +31,43 @@ jobs:
       - name: Build Debug and Release APK
         run: ./gradlew assemble
 
-      - name: Rename APKs for Release
+      - name: Sign and Package APKs
         run: |
           mkdir -p release-artifacts
+          
+          # Copy and rename debug APK (which is already signed by default)
           cp app/build/outputs/apk/debug/app-debug.apk release-artifacts/InstaDown-${{ github.ref_name }}-debug.apk
+          
+          # Locate apksigner in Android SDK
+          APKSIGNER=$(find $ANDROID_HOME/build-tools -name apksigner | sort -V | tail -n 1)
+          echo "Found apksigner at: $APKSIGNER"
+          
+          # Sign the release APK if it exists
           if [ -f app/build/outputs/apk/release/app-release-unsigned.apk ]; then
-            cp app/build/outputs/apk/release/app-release-unsigned.apk release-artifacts/InstaDown-${{ github.ref_name }}-release-unsigned.apk
+            if [ -n "${{ secrets.SIGNING_KEY }}" ]; then
+              echo "Signing release APK with repository secrets..."
+              echo "${{ secrets.SIGNING_KEY }}" | base64 --decode > release.keystore
+              $APKSIGNER sign --ks release.keystore \
+                --ks-key-alias "${{ secrets.ALIAS }}" \
+                --ks-pass pass:"${{ secrets.KEY_STORE_PASSWORD }}" \
+                --key-pass pass:"${{ secrets.KEY_PASSWORD }}" \
+                --out release-artifacts/InstaDown-${{ github.ref_name }}-release.apk \
+                app/build/outputs/apk/release/app-release-unsigned.apk
+            else
+              echo "No signing secrets found. Generating a temporary keystore to sign the release APK..."
+              keytool -genkeypair -v -keystore temp.keystore -alias temp-alias -keyalg RSA -keysize 2048 -validity 10000 \
+                -dname "CN=InstaDown, OU=App, O=InstaDown, L=Unknown, S=Unknown, C=US" \
+                -storepass "temp_password" -keypass "temp_password"
+              
+              $APKSIGNER sign --ks temp.keystore \
+                --ks-key-alias temp-alias \
+                --ks-pass pass:"temp_password" \
+                --key-pass pass:"temp_password" \
+                --out release-artifacts/InstaDown-${{ github.ref_name }}-release.apk \
+                app/build/outputs/apk/release/app-release-unsigned.apk
+            fi
+          else
+            echo "Release APK not found."
           fi
 
       - name: Create Release and Upload Assets
